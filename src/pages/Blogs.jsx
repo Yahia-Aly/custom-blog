@@ -78,7 +78,7 @@ const Blogs = () => {
                             return (
                                 <Article
                                     key={post._id || post.route}
-                                    route={isStaticPost ? `/${post.route}` : `/post/${post._id}`}
+                                    route={isStaticPost ? `/${post.route}` : `/api/posts/${post._id}`}
                                     thumbnail={post.coverImage || post.image}
                                     title={post.title}
                                     date={post.createdAt ? new Date(post.createdAt).toLocaleDateString() : post.date}

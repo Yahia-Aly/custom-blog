@@ -137,7 +137,7 @@ const WritePost = () => {
       }
 
       console.log('Post created successfully:', data);
-      history.push(`/post/${data._id}`);
+      history.push(`/api/posts/${data._id}`);
     } catch (err) {
       console.error('Error creating post:', err);
       setError(err.message || 'Failed to create post. Please try again.');

@@ -68,12 +68,12 @@ class App extends Component {
                                 <Blogs />
                             </Route>
 
-                            <Route path="/post/:id">
+                            <Route path="/api/posts/:id">
                                 <Post />
                             </Route>
 
                             {Posts.map((post) => (
-                                <Route key={post.route} path={`/${post.route}`}>
+                                <Route key={post.route} path={`/api/posts/${post.route}`}>
                                     <BlogPost
                                         title={post.title}
                                         date={post.date}
