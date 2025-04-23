@@ -5,6 +5,7 @@ import Article from '../components/Article/Article';
 import Posts from '../posts/Posts';
 import Navigation from '../components/Navigation/Navigation';
 import Footer from '../components/Footer/Footer';
+import { buildApiUrl } from '../config/api';
 
 const Blogs = () => {
     const [posts, setPosts] = useState([]);
@@ -15,9 +16,13 @@ const Blogs = () => {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/posts`);
+                const apiUrl = buildApiUrl('api/posts');
+                console.log('Making request to:', apiUrl); // Debug log
+                const response = await fetch(apiUrl);
                 if (!response.ok) {
-                    throw new Error('Failed to fetch posts');
+                    const errorText = await response.text();
+                    console.error('Response not OK:', response.status, errorText);
+                    throw new Error(`Failed to fetch posts: ${response.status} ${errorText}`);
                 }
                 const data = await response.json();
                 // Only set posts if we actually got data
