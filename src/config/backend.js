@@ -1,6 +1,6 @@
 // Backend configuration
 const config = {
-    baseUrl: 'https://custom-blog-backend.onrender.com',
+    baseUrl: 'https://custom-blog.onrender.com',
     endpoints: {
         posts: '/api/posts',
         post: (id) => `/api/posts/${id}`,
