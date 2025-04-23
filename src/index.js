@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { createBrowserHistory } from 'history';
 
 // Pages
 import Home from "./pages/Home.jsx";
@@ -24,6 +25,8 @@ import Posts from '../src/posts/Posts';
 // Google Analytics
 import ReactGA from "react-ga";
 
+const history = createBrowserHistory();
+
 class App extends Component {
 
     render () {
@@ -41,48 +44,35 @@ class App extends Component {
         return (
             <ThemeProvider theme={theme}>
                 <GlobalStyle />
-                <BrowserRouter>
+                <BrowserRouter history={history}>
                     <AnimatePresence>
                         <Switch>
-                            <Route path="/home">
-                                <Home />
-                            </Route>
-
-                            <Route path="/coffee">
-                                <Coffee />
-                            </Route>
-
-                            <Route path="/plant">
-                                <Plant />
-                            </Route>
-
-                            <Route path="/write">
-                                <Write />
-                            </Route>
-
-                            <Route path="/login">
-                                <Login />
-                            </Route>
-
-                            <Route path="/blogs">
-                                <Blogs />
-                            </Route>
-
-                            <Route path="/post/:id">
-                                <Post />
-                            </Route>
-
-                            {Posts.map((post) => (
-                                <Route key={post.route} path={`/api/posts/${post.route}`}>
-                                    <BlogPost
-                                        title={post.title}
-                                        date={post.date}
-                                        image={post.image}
-                                        content={post.content}
-                                    />
-                                </Route>
-                            ))}
-                            <Redirect from="/" to="/home" />
+                            <Route exact path="/" component={Home} />
+                            <Route path="/blogs" component={Blogs} />
+                            <Route path="/plant" component={Plant} />
+                            <Route path="/coffee" component={Coffee} />
+                            <Route path="/post/:id" component={Post} />
+                            {/* Catch-all route for invalid paths */}
+                            <Route render={({ location }) => {
+                                const validRoutes = ['/', '/blogs', '/plant', '/coffee', '/post'];
+                                const currentPath = location.pathname;
+                                
+                                // Check if the current path is valid
+                                const isValidRoute = validRoutes.some(route => {
+                                    // Special handling for post routes
+                                    if (route === '/post') {
+                                        return currentPath.startsWith('/post/');
+                                    }
+                                    return currentPath.startsWith(route);
+                                });
+                                
+                                if (!isValidRoute) {
+                                    // Redirect to home if the route is invalid
+                                    return <Redirect to="/" />;
+                                }
+                                
+                                return null;
+                            }} />
                         </Switch>
                     </AnimatePresence>
                 </BrowserRouter>
