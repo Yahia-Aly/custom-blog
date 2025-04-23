@@ -51,10 +51,12 @@ class App extends Component {
                             <Route path="/blogs" component={Blogs} />
                             <Route path="/plant" component={Plant} />
                             <Route path="/coffee" component={Coffee} />
+                            <Route path="/login" component={Login} />
+                            <Route path="/write" component={Write} />
                             <Route path="/post/:id" component={Post} />
                             {/* Catch-all route for invalid paths */}
                             <Route render={({ location }) => {
-                                const validRoutes = ['/', '/blogs', '/plant', '/coffee', '/post'];
+                                const validRoutes = ['/', '/blogs', '/plant', '/coffee', '/post', '/login', '/write'];
                                 const currentPath = location.pathname;
                                 
                                 // Check if the current path is valid
