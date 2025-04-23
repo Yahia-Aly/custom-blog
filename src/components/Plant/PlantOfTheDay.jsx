@@ -246,6 +246,11 @@ const PlantOfTheDay = () => {
     const handleNext = () => {
         setLoading(true);
         fetchPlant();
+        // Scroll to top
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     };
 
     if (loading) {

@@ -104,6 +104,11 @@ const CoffeeOfTheDay = () => {
         // Generate a random index between 0 and drinksData.length - 1
         const randomIndex = Math.floor(Math.random() * drinksData.length);
         setCurrentDrinkIndex(randomIndex);
+        // Scroll to top
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     };
 
     const currentDrink = drinksData[currentDrinkIndex];
