@@ -16,7 +16,7 @@ const Project = (props) => {
 
     return (
         <Fade direction="top" duration={1000} triggerOnce cascade>
-            <CaseLink href={props.route} target={props.newTab ? '_blank' : null}>
+            <CaseLink onClick={() => history.push(props.route)} style={{ cursor: 'pointer' }}>
                 <CaseStudyContainer>
                     <CaseStudyContent>
                         <Container flexRow leftAlign>
@@ -31,7 +31,7 @@ const Project = (props) => {
                         <Button
                             right
                             text="Read More"
-                            onClick={() => history.push(`/api/posts/:${props._id}`)}
+                            onClick={() => history.push(`/api/posts/${props._id}`)}
                         />
                     </CaseStudyContent>
                     <CaseStudyImage background={props.color}>
