@@ -13,8 +13,16 @@ const PORT = process.env.PORT || 5000;
 // Configure multer for file uploads
 const upload = multer();
 
+// CORS Configuration
+const corsOptions = {
+    origin: ['https://custom-blog.onrender.com', 'http://localhost:3000'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'x-admin-password'],
+    credentials: true
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 

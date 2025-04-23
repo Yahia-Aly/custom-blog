@@ -17,22 +17,39 @@ const Blogs = () => {
         const fetchPosts = async () => {
             try {
                 const apiUrl = buildApiUrl('api/posts');
-                console.log('Making request to:', apiUrl); // Debug log
-                const response = await fetch(apiUrl);
+                console.log('Fetching posts from:', apiUrl);
+                
+                const response = await fetch(apiUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                console.log('Response status:', response.status);
+                
                 if (!response.ok) {
                     const errorText = await response.text();
-                    console.error('Response not OK:', response.status, errorText);
+                    console.error('Error response:', {
+                        status: response.status,
+                        statusText: response.statusText,
+                        body: errorText
+                    });
                     throw new Error(`Failed to fetch posts: ${response.status} ${errorText}`);
                 }
+
                 const data = await response.json();
-                // Only set posts if we actually got data
+                console.log('Received data:', data);
+                
                 if (data && data.length > 0) {
                     setPosts(data);
                 } else {
+                    console.log('No posts received, using static posts');
                     setPosts(Posts);
                 }
             } catch (err) {
-                console.error('Error fetching posts:', err);
+                console.error('Error in fetchPosts:', err);
                 setError(err.message);
                 setPosts(Posts);
             } finally {
