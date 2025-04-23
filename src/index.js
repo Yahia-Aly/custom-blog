@@ -68,7 +68,7 @@ class App extends Component {
                                 <Blogs />
                             </Route>
 
-                            <Route path="/api/posts/id">
+                            <Route path="/post/:id">
                                 <Post />
                             </Route>
 

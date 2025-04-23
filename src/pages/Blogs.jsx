@@ -56,6 +56,7 @@ const Blogs = () => {
                             return (
                                 <Article
                                     key={post._id || post.route}
+                                    _id={post._id}
                                     route={isStaticPost ? `/${post.route}` : `/api/posts/${post._id}`}
                                     thumbnail={post.coverImage || post.image}
                                     title={post.title}

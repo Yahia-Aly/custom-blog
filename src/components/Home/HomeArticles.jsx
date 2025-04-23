@@ -59,6 +59,7 @@ const HomeArticles = () => {
                     return (
                         <Article
                             key={post._id || post.route}
+                            _id={post._id}
                             route={isStaticPost ? `/api/posts/${post.route}` : `/api/posts/${post._id}`}
                             thumbnail={post.coverImage || post.image}
                             title={post.title}

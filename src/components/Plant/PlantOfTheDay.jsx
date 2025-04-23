@@ -50,9 +50,14 @@ const PlantInfo = styled.div`
 const PlantDetail = styled.div`
     margin: 1rem 0;
     color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
     
     strong {
         color: ${props => props.theme.colors.primary};
+        text-align: center;
     }
 `;
 
@@ -91,6 +96,22 @@ const PlantOfTheDay = () => {
     const history = useHistory();
     const TOKEN = 'YPL0oCPPmylIEwr78weBx3uvF4s3qv2k4YnjfaBC53M';
 
+    const placeholderImages = [
+        'https://images.unsplash.com/photo-1694747994681-67791c336f2c?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1611974343366-c0ef27b1a0bd?q=80&w=2564&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1724035995829-09f72b89b557?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1722654585792-fbe7b2e1f5fd?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1736039750283-79c5016e1dad?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1627909477137-dfef12d46d47?q=80&w=2300&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1572186192734-e82b57dc4435?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1679310446454-f94b53167675?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+    ];
+
+    const getRandomPlaceholder = () => {
+        const randomIndex = Math.floor(Math.random() * placeholderImages.length);
+        return placeholderImages[randomIndex];
+    };
+
     useEffect(() => {
         const getClientToken = async () => {
             try {
@@ -101,7 +122,7 @@ const PlantOfTheDay = () => {
 
                 const response = await axios({
                     method: 'post',
-                    url: 'https://trefle.io/api/auth/claim',
+                    url: '/api/auth/claim',
                     data: params,
                     headers: { 
                         'Content-Type': 'application/json',
@@ -149,7 +170,7 @@ const PlantOfTheDay = () => {
             attemptedIds.add(plantId);
 
             const response = await axios.get(
-                `https://trefle.io/api/v1/species/${plantId}?token=${clientToken}`,
+                `/api/v1/species/${plantId}?token=${clientToken}`,
                 {
                     headers: {
                         'Accept': 'application/json'
@@ -177,7 +198,7 @@ const PlantOfTheDay = () => {
                     }
                 // If we've tried all retries and still no image, show the plant with a message
                 if (!response.data.data.image_url) {
-                    response.data.data.noImageMessage = "Sorry, no image :(";
+                    response.data.data.noImageMessage = "Sorry, no image, enjoy this random one instead!";
                 }
                 if (!response.data.data.distribution.native) {
                     response.data.data.noImageMessage = "Sorry, no native distribution data available :(";
@@ -244,6 +265,11 @@ const PlantOfTheDay = () => {
                 <PlantImage src={plant.image_url} alt={plant.common_name || plant.scientific_name} />
             ) : (
                 <PlantDetail>
+                    <PlantImage 
+                        src={getRandomPlaceholder()} 
+                        alt="No image available"
+                        style={{ maxWidth: '400px' }}
+                    />
                     <strong>{plant.noImageMessage}</strong>
                 </PlantDetail>
             )}

@@ -22,8 +22,13 @@ const Post = () => {
                     throw new Error('Failed to fetch post');
                 }
                 const data = await response.json();
-                console.log('Received post data:', data);
-                setPost(data);
+                // Only set the post if we actually got data
+                if (data) {
+                    setPost(data);
+                    console.log('Received post data:', data);
+                } else {
+                    setError('Post not found');
+                }
             } catch (err) {
                 console.error('Error fetching post:', err);
                 setError(err.message);

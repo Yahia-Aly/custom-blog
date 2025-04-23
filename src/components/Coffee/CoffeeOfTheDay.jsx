@@ -97,7 +97,7 @@ const NextButton = styled.button`
 `;
 
 const CoffeeOfTheDay = () => {
-    const [currentDrinkIndex, setCurrentDrinkIndex] = useState(0);
+    const [currentDrinkIndex, setCurrentDrinkIndex] = useState(() => Math.floor(Math.random() * drinksData.length));
     const history = useHistory();
 
     const handleNext = () => {
