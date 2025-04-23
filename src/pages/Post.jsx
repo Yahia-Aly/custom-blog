@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { BodyContainer, Container } from '../components/StyledComponents/StyledComponents';
 import Navigation from '../components/Navigation/Navigation';
 import Footer from '../components/Footer/Footer';
-import { getBackendUrl } from '../config/backend';
 
 const Post = () => {
     const { id } = useParams();
@@ -14,17 +13,7 @@ const Post = () => {
     useEffect(() => {
         const fetchPost = async () => {
             try {
-                const apiUrl = getBackendUrl(`/api/posts/${id}`);
-                console.log('Fetching post from:', apiUrl);
-                
-                const response = await fetch(apiUrl, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    }
-                });
-
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/posts/${id}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch post');
                 }

@@ -5,7 +5,6 @@ import Article from '../components/Article/Article';
 import Posts from '../posts/Posts';
 import Navigation from '../components/Navigation/Navigation';
 import Footer from '../components/Footer/Footer';
-import { getBackendUrl } from '../config/backend';
 
 const Blogs = () => {
     const [posts, setPosts] = useState([]);
@@ -16,40 +15,19 @@ const Blogs = () => {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const apiUrl = getBackendUrl('/api/posts');
-                console.log('Fetching posts from:', apiUrl);
-                
-                const response = await fetch(apiUrl, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                console.log('Response status:', response.status);
-                
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/posts`);
                 if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error('Error response:', {
-                        status: response.status,
-                        statusText: response.statusText,
-                        body: errorText
-                    });
-                    throw new Error(`Failed to fetch posts: ${response.status} ${errorText}`);
+                    throw new Error('Failed to fetch posts');
                 }
-
                 const data = await response.json();
-                console.log('Received data:', data);
-                
+                // Only set posts if we actually got data
                 if (data && data.length > 0) {
                     setPosts(data);
                 } else {
-                    console.log('No posts received, using static posts');
                     setPosts(Posts);
                 }
             } catch (err) {
-                console.error('Error in fetchPosts:', err);
+                console.error('Error fetching posts:', err);
                 setError(err.message);
                 setPosts(Posts);
             } finally {
