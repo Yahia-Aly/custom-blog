@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import {
     Container,
     CaseLink,
@@ -11,6 +12,8 @@ import Button from '../Utility/Button';
 import { Fade } from 'react-awesome-reveal';
 
 const Project = (props) => {
+    const history = useHistory();
+
     return (
         <Fade direction="top" duration={1000} triggerOnce cascade>
             <CaseLink href={props.route} target={props.newTab ? '_blank' : null}>
@@ -28,7 +31,7 @@ const Project = (props) => {
                         <Button
                             right
                             text="Read More"
-                            route={props.route}
+                            onClick={() => history.push(`/api/posts/:${props._id}`)}
                         />
                     </CaseStudyContent>
                     <CaseStudyImage background={props.color}>
