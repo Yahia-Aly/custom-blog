@@ -121,6 +121,8 @@ const PlantOfTheDay = () => {
                     token: TOKEN
                 };
 
+                console.log('Requesting client token with params:', params);
+
                 const response = await axios({
                     method: 'post',
                     url: '/api/auth/claim',
@@ -131,13 +133,21 @@ const PlantOfTheDay = () => {
                     }
                 });
 
+                console.log('Trefle API response:', response.data);
+
                 if (response.data && response.data.token) {
                     setClientToken(response.data.token);
                 } else {
+                    console.error('Invalid response format:', response.data);
                     throw new Error('No token received');
                 }
             } catch (error) {
                 console.error('Error getting client token:', error);
+                console.error('Error details:', {
+                    message: error.message,
+                    response: error.response?.data,
+                    status: error.response?.status
+                });
                 setError('Failed to authenticate with plant database. Please try again later.');
                 setLoading(false);
             }

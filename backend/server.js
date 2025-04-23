@@ -180,11 +180,35 @@ app.post('/api/verify-password', (req, res) => {
 // Trefle API proxy route
 app.post('/api/auth/claim', async (req, res) => {
     try {
-        const response = await axios.post('https://trefle.io/api/auth/claim', req.body);
-        res.json(response.data);
+        console.log('Received Trefle auth request with body:', req.body);
+        
+        const response = await axios.post('https://trefle.io/api/auth/claim', {
+            ...req.body
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        });
+        
+        console.log('Trefle API response:', response.data);
+        
+        // Return the token and expiration
+        res.json({
+            token: response.data.token,
+            expiration: response.data.expiration
+        });
     } catch (error) {
         console.error('Error proxying to Trefle API:', error);
-        res.status(500).json({ error: 'Failed to authenticate with Trefle API' });
+        console.log('Error details:', {
+            message: error.message,
+            response: error.response?.data,
+            status: error.response?.status
+        });
+        res.status(500).json({ 
+            error: 'Failed to authenticate with Trefle API',
+            details: error.response?.data || error.message
+        });
     }
 });
 
