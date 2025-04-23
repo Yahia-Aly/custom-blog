@@ -28,8 +28,23 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('MongoDB connection error:', err));
+  .then(() => {
+    console.log('Connected to MongoDB successfully');
+    console.log('MongoDB URI:', process.env.MONGODB_URI ? 'Present' : 'Missing');
+  })
+  .catch(err => {
+    console.error('MongoDB connection error:', err);
+    console.error('MongoDB URI:', process.env.MONGODB_URI ? 'Present' : 'Missing');
+  });
+
+// Add connection event listeners
+mongoose.connection.on('error', err => {
+  console.error('MongoDB connection error:', err);
+});
+
+mongoose.connection.on('disconnected', () => {
+  console.log('MongoDB disconnected');
+});
 
 // Simple password verification middleware
 const verifyPassword = (req, res, next) => {
@@ -41,14 +56,41 @@ const verifyPassword = (req, res, next) => {
   }
 };
 
+// Health check endpoint
+app.get('/health', async (req, res) => {
+  try {
+    const dbState = mongoose.connection.readyState;
+    const healthStatus = {
+      status: dbState === 1 ? 'healthy' : 'unhealthy',
+      mongodb: {
+        connected: dbState === 1,
+        state: dbState,
+        uri: process.env.MONGODB_URI ? 'present' : 'missing'
+      }
+    };
+    res.json(healthStatus);
+  } catch (error) {
+    res.status(500).json({ 
+      status: 'error',
+      error: error.message 
+    });
+  }
+});
+
 // Routes
 // Get all posts
 app.get('/api/posts', async (req, res) => {
   try {
+    console.log('Attempting to fetch posts...');
     const posts = await Post.find().sort({ createdAt: -1 });
+    console.log('Found posts:', posts.length);
     res.json(posts);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Error fetching posts:', error);
+    res.status(500).json({ 
+      message: error.message,
+      details: 'Failed to fetch posts from database'
+    });
   }
 });
 
