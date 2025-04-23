@@ -15,7 +15,7 @@ const upload = multer();
 
 // CORS Configuration
 const corsOptions = {
-    origin: ['https://custom-blog.onrender.com', 'http://localhost:3000'],
+    origin: ['https://custom-blog.onrender.com', 'https://janas-blogs.onrender.com', 'http://localhost:3000'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'x-admin-password'],
     credentials: true
