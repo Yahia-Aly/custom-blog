@@ -121,7 +121,7 @@ const Login = () => {
         return;
       }
       try {
-        const response = await fetch('http://localhost:5000/api/verify-password', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/verify-password`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

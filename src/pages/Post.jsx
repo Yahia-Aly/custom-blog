@@ -13,7 +13,7 @@ const Post = () => {
     useEffect(() => {
         const fetchPost = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/posts/${id}`);
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/posts/${id}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch post');
                 }
