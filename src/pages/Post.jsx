@@ -13,11 +13,16 @@ const Post = () => {
     useEffect(() => {
         const fetchPost = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/posts/${id}`);
+                console.log('Fetching post with ID:', id);
+                const apiUrl = `${process.env.REACT_APP_API_URL}/api/posts/:${id}`;
+                console.log('API URL:', apiUrl);
+                
+                const response = await fetch(apiUrl);
                 if (!response.ok) {
                     throw new Error('Failed to fetch post');
                 }
                 const data = await response.json();
+                console.log('Received post data:', data);
                 setPost(data);
             } catch (err) {
                 console.error('Error fetching post:', err);
