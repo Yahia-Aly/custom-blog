@@ -4,6 +4,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const multer = require('multer');
 const Post = require('./models/Post');
+const axios = require('axios');
 
 dotenv.config();
 
@@ -174,6 +175,17 @@ app.post('/api/verify-password', (req, res) => {
   } else {
     res.status(401).json({ message: 'Invalid password' });
   }
+});
+
+// Trefle API proxy route
+app.post('/api/auth/claim', async (req, res) => {
+    try {
+        const response = await axios.post('https://trefle.io/api/auth/claim', req.body);
+        res.json(response.data);
+    } catch (error) {
+        console.error('Error proxying to Trefle API:', error);
+        res.status(500).json({ error: 'Failed to authenticate with Trefle API' });
+    }
 });
 
 // Start server

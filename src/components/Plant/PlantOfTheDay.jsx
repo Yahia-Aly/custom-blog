@@ -115,8 +115,9 @@ const PlantOfTheDay = () => {
     useEffect(() => {
         const getClientToken = async () => {
             try {
+                const origin = window.location.origin;
                 const params = {
-                    origin: window.location.origin,
+                    origin: origin,
                     token: TOKEN
                 };
 
@@ -135,9 +136,9 @@ const PlantOfTheDay = () => {
                 } else {
                     throw new Error('No token received');
                 }
-            } catch (err) {
-                console.error('Error getting client token:', err);
-                setError('Failed to authenticate with the plant database');
+            } catch (error) {
+                console.error('Error getting client token:', error);
+                setError('Failed to authenticate with plant database. Please try again later.');
                 setLoading(false);
             }
         };
