@@ -185,7 +185,7 @@ const PlantOfTheDay = () => {
             attemptedIds.add(plantId);
 
             const response = await axios.get(
-                `/api/v1/species/${plantId}?token=${clientToken}`,
+                `https://trefle.io/api/v1/species/${plantId}?token=${clientToken}`,
                 {
                     headers: {
                         'Accept': 'application/json'
