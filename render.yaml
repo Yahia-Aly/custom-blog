@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: custom-blog-frontend
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: serve -s build
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: ADMIN_PASSWORD
+        value: helloWorld
+    staticPublishPath: build
+
+  - type: web
+    name: custom-blog-backend
+    env: node
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        value: mongodb+srv://yahia:KV92eyUyQosu58hx@clusterblog.gumbquu.mongodb.net/?retryWrites=true&w=majority&appName=ClusterBlog
+        sync: false
+      - key: PORT
+        value: 10000 
