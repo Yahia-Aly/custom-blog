@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import Navigation from '../components/Navigation/Navigation';
 import Footer from '../components/Footer/Footer';
+import { getBackendUrl } from '../config/backend';
 
 const LoginContainer = styled.div`
   display: flex;
@@ -121,7 +122,10 @@ const Login = () => {
         return;
       }
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/verify-password`, {
+        const apiUrl = getBackendUrl('/api/verify-password');
+        console.log('Verifying password at:', apiUrl);
+        
+        const response = await fetch(apiUrl, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

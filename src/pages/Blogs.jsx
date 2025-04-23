@@ -5,7 +5,7 @@ import Article from '../components/Article/Article';
 import Posts from '../posts/Posts';
 import Navigation from '../components/Navigation/Navigation';
 import Footer from '../components/Footer/Footer';
-import { buildApiUrl } from '../config/api';
+import { getBackendUrl } from '../config/backend';
 
 const Blogs = () => {
     const [posts, setPosts] = useState([]);
@@ -16,7 +16,7 @@ const Blogs = () => {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const apiUrl = buildApiUrl('api/posts');
+                const apiUrl = getBackendUrl('/api/posts');
                 console.log('Fetching posts from:', apiUrl);
                 
                 const response = await fetch(apiUrl, {
