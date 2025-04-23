@@ -14,7 +14,7 @@ const Post = () => {
         const fetchPost = async () => {
             try {
                 console.log('Fetching post with ID:', id);
-                const apiUrl = `${process.env.REACT_APP_API_URL}/api/posts/:${id}`;
+                const apiUrl = `${process.env.REACT_APP_API_URL}/api/posts/${id}`;
                 console.log('API URL:', apiUrl);
                 
                 const response = await fetch(apiUrl);
